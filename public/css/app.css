@@ -1,0 +1,51 @@
+:root {
+    --primary-color: #0e7490;
+    --primary-hover: #38bdf8;
+    --accent-color: #f59e0b;
+    --accent-hover: #1e40af;
+}
+
+.bg-primary {
+    background-color: var(--primary-color);
+}
+
+.hover\:bg-primary-hover:hover {
+    background-color: var(--primary-hover);
+}
+
+.bg-accent {
+    background-color: var(--accent-color);
+}
+
+.hover\:bg-accent-hover:hover {
+    background-color: var(--accent-hover);
+}
+
+.text-accent-hover:hover {
+    color: var(--accent-color);
+}
+
+.border-primary {
+    border-color: var(--primary-color)
+}
+
+
+/*  */
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #38bdf8;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
