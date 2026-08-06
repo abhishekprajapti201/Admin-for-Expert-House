@@ -12,7 +12,7 @@ class SettingsController extends Controller
 {
     public function header()
     {
-        $settings = HeaderFooter::all();
+        $settings = HeaderFooter::orderBy('id', 'desc')->get();
 
         return view('admin.Headers.ManageHeader', compact('settings'));
     }
@@ -20,7 +20,7 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'logo' => ' nullable|file',
+            'logo' => ' nullable|image|mimes:jpg,jpeg,png',
             'whatsapp_no' => 'nullable|string|max:20',
             'phone_no' => 'nullable|string|max:20',
             'location' => 'nullable|string|max:255',
@@ -57,12 +57,12 @@ class SettingsController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'required|image|mimes:jpg,png,jpeg',
             'whatsapp_no' => 'nullable|string|max:20',
             'phone_no' => 'nullable|string|max:20',
             'location' => 'nullable|string|max:255',
-            'whatsappIcon' => 'nullable|string|max:50',
-            'phoneIcon' => 'nullable|string|max:50',
+            'whatsappIcon' => 'nullable|string',
+            'phoneIcon' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -105,14 +105,15 @@ class SettingsController extends Controller
 
         $settings->delete();
 
-        return redirect()->route('admin.settings.index')
+        return back()
             ->with('success', 'Settings deleted successfully!');
     }
 
     public function edit($id)
     {
-        $settings = HeaderFooter::findOrFail($id);
+        $edit = HeaderFooter::findOrFail($id) ?? [];
+        $settings = HeaderFooter::orderBy('id', 'desc')->get();
 
-        return view('admin.settings.edit', compact('settings'));
+        return view('admin.Headers.ManageHeader', compact('settings', 'edit'));
     }
 }

@@ -58,66 +58,49 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    <tr class="hover:bg-blue-50/40 transition-colors duration-150">
-                        <td class="px-4 py-4 flex items-center gap-3">
-                            <span
-                                class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl flex items-center justify-center text-sm font-bold shadow-sm">A</span>
-                            <span class="font-medium text-gray-800">Acme Inc.</span>
-                        </td>
-                        <td class="px-4 py-4"><span
-                                class="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold"><i
-                                    class="fab fa-whatsapp mr-1.5"></i>+1 234 5678</span></td>
-                        <td class="px-4 py-4"><span
-                                class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-xs font-semibold"><i
-                                    class="fas fa-phone mr-1.5"></i>+1 987 6543</span></td>
-                        <td class="px-4 py-4"><i class="fas fa-map-pin text-gray-400 mr-2"></i>New York, USA</td>
-                        <td class="px-4 py-4">
-                            <div class="flex items-center gap-2.5">
+                    @forelse ($settings as $key=> $data)
+                        <tr class="hover:bg-blue-50/40 transition-colors duration-150">
+                            <td class="px-4 py-4 flex items-center gap-3">
                                 <span
-                                    class="w-8 h-8 bg-green-100 text-green-600 rounded-lg flex items-center justify-center"><i
-                                        class="fab fa-whatsapp"></i></span>
-                                <span
-                                    class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><i
-                                        class="fas fa-phone-alt"></i></span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4 text-right">
-                            <button class="text-gray-400 hover:text-blue-600 transition-colors mr-3"><i
-                                    class="fas fa-pen text-sm"></i></button>
-                            <button class="text-gray-400 hover:text-red-500 transition-colors"><i
-                                    class="fas fa-trash text-sm"></i></button>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-blue-50/40 transition-colors duration-150">
-                        <td class="px-4 py-4 flex items-center gap-3">
-                            <span
-                                class="w-9 h-9 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl flex items-center justify-center text-sm font-bold shadow-sm">B</span>
-                            <span class="font-medium text-gray-800">Beta Corp</span>
-                        </td>
-                        <td class="px-4 py-4"><span
-                                class="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold"><i
-                                    class="fab fa-whatsapp mr-1.5"></i>+44 20 1234</span></td>
-                        <td class="px-4 py-4"><span
-                                class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-xs font-semibold"><i
-                                    class="fas fa-phone mr-1.5"></i>+44 20 5678</span></td>
-                        <td class="px-4 py-4"><i class="fas fa-map-pin text-gray-400 mr-2"></i>London, UK</td>
-                        <td class="px-4 py-4">
-                            <div class="flex items-center gap-2.5">
-                                <span
-                                    class="w-8 h-8 bg-green-100 text-green-600 rounded-lg flex items-center justify-center"><i
-                                        class="fab fa-whatsapp"></i></span>
-                                <span
-                                    class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center"><i
-                                        class="fas fa-phone-alt"></i></span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4 text-right">
-                            <button class="text-gray-400 hover:text-blue-600 transition-colors mr-3"><i
-                                    class="fas fa-pen text-sm"></i></button>
-                            <button class="text-gray-400 hover:text-red-500 transition-colors"><i
-                                    class="fas fa-trash text-sm"></i></button>
-                        </td>
-                    </tr>
+                                    class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl flex items-center justify-center text-sm font-bold shadow-sm">Logo</span>
+                                <span class="font-medium text-gray-800">
+                                    <img src="{{ $data->logo ? asset($data->logo) : 'default.jpg' }}" alt="">
+                                </span>
+                            </td>
+                            <td class="px-4 py-4"><span
+                                    class="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-xs font-semibold"><i
+                                        class="fab fa-whatsapp mr-1.5"></i>{{ $data->whatsapp_no ?? '-' }}</span></td>
+                            <td class="px-4 py-4"><span
+                                    class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-xs font-semibold"><i
+                                        class="fas fa-phone mr-1.5"></i>{{ $data->phone_no ?? '-' }}</span></td>
+                            <td class="px-4 py-4"><i
+                                    class="fas fa-map-pin text-gray-400 mr-2"></i>{{ $data->location ?? '-' }}</td>
+                            <td class="px-4 py-4">
+                                <div class="flex items-center gap-2.5">
+                                    <span
+                                        class="w-8 h-8 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">{!! $data->whatsappIcon ?? '-' !!}</span>
+                                    <span
+                                        class="w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">{!! $data->phoneIcon ?? '-' !!}</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 text-center flex">
+                                <a href="{{ route('header.edit', $data->id ?? 0) }}"
+                                    class="text-gray-400 hover:text-blue-600 transition-colors mr-3"><i
+                                        class="fas fa-pen text-sm"></i></a>
+                                <form action="{{ route('header.delete', $data->id ?? 0) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Are you sure delete data')"
+                                        class="text-gray-400 hover:text-red-500 transition-colors"><i
+                                            class="fas fa-trash text-sm"></i></button>
+                                </form>
+
+                            </td>
+                        </tr>
+                    @empty
+                    @endforelse
+
+
                 </tbody>
             </table>
         </div>
@@ -131,16 +114,21 @@
                 <span class="text-xs text-gray-400 bg-gray-100 px-3 py-1 rounded-full font-medium">fillable fields</span>
             </div>
 
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-5" action="{{ route('header.store') }}" method="POST">
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-5"
+                action="{{ isset($edit) ? route('header.update', $edit->id ?? 0) : route('header.store') }}" method="POST">
                 @csrf
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Logo</label>
                     <div class="flex items-center gap-2">
                         <input type="file" name="logo"
                             class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-200 focus:border-blue-500 outline-none transition-all bg-white shadow-sm" />
+
                         <button type="button"
                             class="bg-gray-100 hover:bg-gray-200 p-2.5 rounded-xl text-gray-600 transition-all hover:shadow-sm">
-                            <i class="fas fa-image"></i>
+                            @if (!isset($edit))
+                                <img src="{{ isset($edit) ? asset($edit->logo) : '' }}" alt="" width="100">
+                            @endif
+
                         </button>
                     </div>
                 </div>
@@ -148,21 +136,21 @@
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">WhatsApp
                         No.</label>
-                    <input type="text" value="{{ old('whatsapp_no') }}" name="whatsapp_no" placeholder="WhatsApp number"
+                    <input type="text" value="{{ old('whatsapp_no',isset($edit) ? $edit->whatsapp_no : "") }}" name="whatsapp_no" placeholder="WhatsApp number"
                         class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-200 focus:border-blue-500 outline-none transition-all bg-white shadow-sm" />
                 </div>
                 <!-- Phone -->
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Phone
                         No.</label>
-                    <input type="text" value="{{ old('phone_no') }}" name="phone_no" placeholder="Phone number"
+                    <input type="text" value="{{ old('phone_no',isset($edit) ? $edit->phone_no : "") }}" name="phone_no" placeholder="Phone number"
                         class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-200 focus:border-blue-500 outline-none transition-all bg-white shadow-sm" />
                 </div>
                 <!-- Location -->
                 <div>
                     <label
                         class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Location</label>
-                    <input type="text" value="{{ old('location') }}" name="location" placeholder="City, Country"
+                    <input type="text" value="{{ old('location',isset($edit) ? $edit->location : "") }}" name="location" placeholder="City, Country"
                         class="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-200 focus:border-blue-500 outline-none transition-all bg-white shadow-sm" />
                 </div>
                 <!-- Icons -->
@@ -170,17 +158,15 @@
                     <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Icons
                         (whatsappIcon / phoneIcon)</label>
                     <div class="flex flex-wrap items-center gap-3">
-                        <div
-                            class="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-sm">
+                        <div class="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-sm">
                             <i class="fab fa-whatsapp text-green-500 text-lg"></i>
-                            <input type="text" value="{{ old('whatsappIcon') }}" name="whatsappIcon"
+                            <input type="text" value="{{ old('whatsappIcon',isset($edit) ? $edit->whatsappIcon : "") }}" name="whatsappIcon"
                                 placeholder="icon class"
                                 class="w-32 border-0 p-0 text-sm focus:ring-0 outline-none bg-transparent font-mono text-gray-700" />
                         </div>
-                        <div
-                            class="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-sm">
+                        <div class="flex items-center gap-2 bg-white border border-gray-300 rounded-xl px-3 py-2 shadow-sm">
                             <i class="fas fa-phone-alt text-blue-500 text-lg"></i>
-                            <input type="text" value="{{ old('whatsappIcon') }}" name="whatsappIcon"
+                            <input type="text" value="{{ old('phoneIcon',isset($edit) ? $edit->phoneIcon : "") }}" name="phoneIcon"
                                 placeholder="icon class"
                                 class="w-32 border-0 p-0 text-sm focus:ring-0 outline-none bg-transparent font-mono text-gray-700" />
                         </div>
