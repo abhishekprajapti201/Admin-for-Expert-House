@@ -48,8 +48,9 @@ class CategoryController extends Controller
             ->with('success', 'Category created successfully!');
     }
 
-    public function edit(Category $category)
+    public function edit($id)
     {
+        $category = Category::findOrFail($id);
         return view('admin.category.edit', compact('category'));
     }
 

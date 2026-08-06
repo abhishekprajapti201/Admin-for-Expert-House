@@ -77,20 +77,30 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const categoryName = document.querySelector('input[name="category_name"]');
-    const slugInput = document.querySelector('input[name="slug"]');
+document.addEventListener("DOMContentLoaded", function () {
 
-    // Auto-generate slug when category name changes (if slug field is empty)
-    categoryName.addEventListener('keyup', function() {
-        if (slugInput.value.trim() === '') {
-            const slug = this.value
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-+|-+$/g, '');
-            slugInput.value = slug;
+    const name = document.querySelector("input[name='category_name']");
+    const slug = document.querySelector("input[name='slug']");
+
+    function makeSlug(text) {
+        return text
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "-")
+            .replace(/[^\w\-]+/g, "")
+            .replace(/\-\-+/g, "-");
+    }
+
+    name.addEventListener("input", function () {
+        if (!slug.dataset.edited) {
+            slug.value = makeSlug(this.value);
         }
     });
+
+    slug.addEventListener("input", function () {
+        this.dataset.edited = "true";
+    });
+
 });
 </script>
 @endsection

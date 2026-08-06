@@ -82,7 +82,7 @@
                            class="text-gray-400 hover:text-indigo-600 transition-colors mr-2 inline-block">
                             <i class="fas fa-eye text-sm"></i>
                         </a>
-                        <a href="{{ route('category.edit',$catrgory->id ?? 0) }}"
+                        <a href="{{ route('category.edit',$category->id ?? 0) }}"
                            class="text-gray-400 hover:text-indigo-600 transition-colors mr-2 inline-block">
                             <i class="fas fa-pen text-sm"></i>
                         </a>

@@ -26,9 +26,8 @@
         <p class="text-sm text-gray-500 mt-1 ml-1">Update category information</p>
     </div>
 
-    <form action="" method="POST" class="px-8 py-6">
+    <form action="{{ route('category.update',$category->id ?? 0) }}" method="POST" class="px-8 py-6">
         @csrf
-        @method('PUT')
 
         <div class="space-y-5">
             <!-- Category Name -->
