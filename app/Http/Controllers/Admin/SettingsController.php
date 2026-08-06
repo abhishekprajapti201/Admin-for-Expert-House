@@ -20,7 +20,7 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'logo' => ' nullable|image|mimes:jpg,jpeg,png',
+            'logo' => ' nullable|file',
             'whatsapp_no' => 'nullable|string|max:20',
             'phone_no' => 'nullable|string|max:20',
             'location' => 'nullable|string|max:255',
@@ -45,7 +45,7 @@ class SettingsController extends Controller
             }
 
             $image->move($destinationPath, $imageName);
-            $data['logo'] = $imageName;
+            $data['logo'] = "uploads/settings/".$imageName;
         }
 
         HeaderFooter::create($data);
@@ -87,7 +87,7 @@ class SettingsController extends Controller
             }
 
             $image->move($destinationPath, $imageName);
-            $data['logo'] = $imageName;
+            $data['logo'] = "uploads/settings/".$imageName;
         }
 
         $settings->update($data);

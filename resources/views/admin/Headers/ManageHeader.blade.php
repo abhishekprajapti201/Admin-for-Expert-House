@@ -28,7 +28,7 @@
                 </h2>
                 <p class="text-sm text-gray-500 mt-1 ml-1">Manage your contact & branding information</p>
             </div>
-          
+
         </div>
 
         {{-- Table --}}
@@ -51,7 +51,7 @@
                                 <span
                                     class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl flex items-center justify-center text-sm font-bold shadow-sm">Logo</span>
                                 <span class="font-medium text-gray-800">
-                                    <img src="{{ $data->logo ? asset($data->logo) : 'default.jpg' }}" alt="">
+                                    <img src="{{ $data->logo ? asset($data->logo) : 'default.jpg' }}" alt="" width="100">
                                 </span>
                             </td>
                             <td class="px-4 py-4"><span
@@ -74,7 +74,7 @@
                                 <a href="{{ route('header.edit', $data->id ?? 0) }}"
                                     class="text-gray-400 hover:text-blue-600 transition-colors mr-3"><i
                                         class="fas fa-pen text-sm"></i></a>
-                                <form action="{{ route('header.delete', $data->id ?? 0) }}" method="POST">
+                                <form action="{{isset($edit) ? route('header.delete', $data->id ?? 0) : route('header.delete', $data->id ?? 0) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" onclick="return confirm('Are you sure delete data')"
@@ -102,7 +102,7 @@
             </div>
 
             <form class="grid grid-cols-1 md:grid-cols-2 gap-5"
-                action="{{ isset($edit) ? route('header.update', $edit->id ?? 0) : route('header.store') }}" method="POST">
+                action="{{ isset($edit) ? route('header.update', $edit->id ?? 0) : route('header.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1.5">Logo</label>
@@ -112,7 +112,7 @@
 
                         <button type="button"
                             class="bg-gray-100 hover:bg-gray-200 p-2.5 rounded-xl text-gray-600 transition-all hover:shadow-sm">
-                            @if (!isset($edit))
+                            @if (isset($edit))
                                 <img src="{{ isset($edit) ? asset($edit->logo) : '' }}" alt="" width="100">
                             @endif
 
