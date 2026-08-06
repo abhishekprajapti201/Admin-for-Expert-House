@@ -64,18 +64,19 @@ class BrandController extends Controller
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
-        $branding = Brand::findOFail($id);
-        $images = $branding->images ?? [];
+
+        $branding = Brand::findOrFail($id);
+        $images = $branding->images;
+
+        if (is_string($images)) {
+            $images = json_decode($images, true) ?? [];
+        }
+
+        if (!is_array($images)) {
+            $images = [];
+        }
 
         if ($request->hasFile('images')) {
-
-            foreach ($images as $oldImage) {
-                if (file_exists(public_path($oldImage))) {
-                    unlink(public_path($oldImage));
-                }
-            }
-
-            $images = [];
 
             foreach ($request->file('images') as $image) {
 
@@ -92,8 +93,7 @@ class BrandController extends Controller
             'images' => $images,
         ]);
 
-        return back()
-            ->with('success', 'Branding updated successfully.');
+        return back()->with('success', 'Branding updated successfully.');
     }
     public function destroy($id)
     {
@@ -111,5 +111,35 @@ class BrandController extends Controller
 
         return back()
             ->with('success', 'Branding deleted successfully.');
+    }
+
+    public function deleteBrandImg($id, $index)
+    {
+        $brand = Brand::findOrFail($id);
+        $images = $brand->images;
+        if (is_string($images)) {
+            $images = json_decode($images, true) ?? [];
+        }
+        if (!isset($images[$index])) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Image not found.'
+            ], 404);
+        }
+        $imagePath = public_path($images[$index]);
+
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+        unset($images[$index]);
+        $images = array_values($images);
+        $brand->images = $images;
+        $brand->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Image deleted successfully.',
+            'data' => $brand,
+        ], 200);
     }
 }

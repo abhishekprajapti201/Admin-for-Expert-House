@@ -54,5 +54,6 @@ Route::prefix('admin')->middleware(['super_admin'])->group(function () {
         Route::post('/brand/store', 'store')->name('brand.store');
         Route::post('/brand/{id}/update','update')->name('brand.update');
         Route::delete('/brand/{id}/delete','destroy')->name('insight.delete');
+        Route::get('/delete/image/{id}/{index}','deleteBrandImg')->name('delete.image');
     });
 });
