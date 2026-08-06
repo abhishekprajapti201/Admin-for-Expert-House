@@ -20,7 +20,7 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'logo' => 'required|file',
+            'logo' => ' nullable|file',
             'whatsapp_no' => 'nullable|string|max:20',
             'phone_no' => 'nullable|string|max:20',
             'location' => 'nullable|string|max:255',

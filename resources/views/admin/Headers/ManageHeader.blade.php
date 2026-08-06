@@ -8,6 +8,12 @@
             @endforeach
         </script>
     @endif
+
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
     <div
         class="w-full max-w-7xl mx-auto bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden transition-all duration-200">
         {{-- Header --}}
