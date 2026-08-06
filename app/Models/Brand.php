@@ -12,5 +12,7 @@ class Brand extends Model
 
     protected $fillable = ['images', 'author_name'];
 
-    protected $cast = ['array' => 'images'];
+    protected $casts = [
+    'images' => 'array',
+];
 }

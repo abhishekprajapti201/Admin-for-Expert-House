@@ -24,16 +24,16 @@ class BrandController extends Controller
 
     public function edit($id)
     {
-        $branding = Brand::findOFail($id);
+        $branding = Brand::findOrFail($id);
         return view('admin.branding.edit', compact('branding'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'author_name' => 'required|string|max:255',
+            'author_name' => 'nullable|string|max:255',
             'images' => 'required|array',
-            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'images.*' => 'file',
         ]);
 
         $images = [];
@@ -51,7 +51,7 @@ class BrandController extends Controller
 
         Brand::create([
             'author_name' => $request->author_name,
-            'images' => $images,
+            'images' => json_encode($images),
         ]);
 
         return back()
@@ -60,7 +60,7 @@ class BrandController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'author_name' => 'required|string|max:255',
+            'author_name' => 'nullable|string|max:255',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
