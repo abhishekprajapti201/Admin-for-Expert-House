@@ -10,15 +10,17 @@ use Illuminate\Support\Str;
 
 class SettingsController extends Controller
 {
-
- public function header(){
+    public function header()
+    {
         $settings = HeaderFooter::all();
-        return view('admin.Headers.ManageHeader',compact('settings'));
+
+        return view('admin.Headers.ManageHeader', compact('settings'));
     }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'required|file',
             'whatsapp_no' => 'nullable|string|max:20',
             'phone_no' => 'nullable|string|max:20',
             'location' => 'nullable|string|max:255',
@@ -35,10 +37,10 @@ class SettingsController extends Controller
         $data = $request->all();
         if ($request->hasFile('logo')) {
             $image = $request->file('logo');
-            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $imageName = time().'_'.Str::random(10).'.'.$image->getClientOriginalExtension();
 
             $destinationPath = public_path('uploads/settings');
-            if (!file_exists($destinationPath)) {
+            if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
             }
 
@@ -51,7 +53,6 @@ class SettingsController extends Controller
         return back()
             ->with('success', 'Settings created successfully!');
     }
-
 
     public function update(Request $request, $id)
     {
@@ -72,20 +73,18 @@ class SettingsController extends Controller
         $settings = HeaderFooter::findOrFail($id);
         $data = $request->all();
 
-
         if ($request->hasFile('logo')) {
-            if ($settings->logo && file_exists(public_path('uploads/settings/' . $settings->logo))) {
-                unlink(public_path('uploads/settings/' . $settings->logo));
+            if ($settings->logo && file_exists(public_path('uploads/settings/'.$settings->logo))) {
+                unlink(public_path('uploads/settings/'.$settings->logo));
             }
 
             $image = $request->file('logo');
-            $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $imageName = time().'_'.Str::random(10).'.'.$image->getClientOriginalExtension();
 
             $destinationPath = public_path('uploads/settings');
-            if (!file_exists($destinationPath)) {
+            if (! file_exists($destinationPath)) {
                 mkdir($destinationPath, 0777, true);
             }
-
 
             $image->move($destinationPath, $imageName);
             $data['logo'] = $imageName;
@@ -97,12 +96,11 @@ class SettingsController extends Controller
             ->with('success', 'Settings updated successfully!');
     }
 
-
     public function destroy($id)
     {
         $settings = HeaderFooter::findOrFail($id);
-        if ($settings->logo && file_exists(public_path('uploads/settings/' . $settings->logo))) {
-            unlink(public_path('uploads/settings/' . $settings->logo));
+        if ($settings->logo && file_exists(public_path('uploads/settings/'.$settings->logo))) {
+            unlink(public_path('uploads/settings/'.$settings->logo));
         }
 
         $settings->delete();
@@ -111,9 +109,10 @@ class SettingsController extends Controller
             ->with('success', 'Settings deleted successfully!');
     }
 
-     public function edit($id)
+    public function edit($id)
     {
-         $settings = HeaderFooter::findOrFail($id);
+        $settings = HeaderFooter::findOrFail($id);
+
         return view('admin.settings.edit', compact('settings'));
     }
 }

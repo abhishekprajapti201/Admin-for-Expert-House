@@ -35,11 +35,11 @@
                 class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition">
                 <i class="fa-solid fa-window-maximize w-5"></i> <span class="font-medium">Header Management</span>
             </a>
-            <a href=""
+            {{-- <a href=""
                 class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition">
                 <i class="fa-solid fa-briefcase-medical w-5"></i>
                 <span class="font-medium">Services Management</span>
-            </a>
+            </a> --}}
 
             <div x-data="{ open: false }">
 
@@ -75,7 +75,17 @@
 
             </div>
 
+            <a href=""
+                class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition">
+                <i class="fa-solid fa-briefcase-medical w-5"></i>
+                <span class="font-medium">Manage Banner</span>
+            </a>
 
+            <a href=""
+                class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition">
+                <i class="fa-solid fa-briefcase-medical w-5"></i>
+                <span class="font-medium">Manage Brands</span>
+            </a>
             <!-- Settings -->
             <a href="#"
                 class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition">
