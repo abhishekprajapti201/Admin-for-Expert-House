@@ -21,58 +21,105 @@ class BannerController extends Controller
         return view('admin.banners.create');
     }
 
-    public function store(Request $request)
-    {
+   public function store(Request $request)
+{
+
+    $request->validate([
+        'heading'       => 'required|string|max:255',
+        'first_button'  => 'nullable|string|max:255',
+        'second_button' => 'nullable|string|max:255',
+    ]);
+
+    $videofile = null;
+
+    if ($request->hasFile('video_url')) {
+
         $request->validate([
-            'video_url'     => 'required|url',
-            'heading'       => 'required|string|max:255',
-            'first_button'  => 'nullable|string|max:255',
-            'second_button' => 'nullable|string|max:255',
+            'video_url' => 'file|mimes:mp4,mov,avi,webm|max:20480',
         ]);
 
-        Banner::create($request->only([
-            'video_url',
-            'heading',
-            'first_button',
-            'second_button',
-        ]));
+        $file = $request->file('video_url');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads/banner'), $filename);
 
-        return redirect()
-            ->route('banner.index')
-            ->with('success', 'Banner created successfully.');
+        $videofile = 'uploads/banner/' . $filename;
+
+    } elseif ($request->filled('video_url')) {
+
+        $request->validate([
+            'video_url' => 'url',
+        ]);
+
+        $videofile = $request->video_url;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    Banner::create([
+        'video_url'      => $videofile,
+        'heading'        => $request->heading,
+        'first_button'   => $request->first_button,
+        'second_button'  => $request->second_button,
+    ]);
+
+    return redirect()->route('banner')
+        ->with('success', 'Banner created successfully.');
+}
+
     public function edit($id)
     {
         $banner = Banner::findOrFail($id);
-        return view('admin.banner.edit', compact('banner'));
+        return view('admin.banners.edit', compact('banner'));
     }
 
 
-    public function update(Request $request, Banner $banner)
-    {
+   public function update(Request $request,$id)
+{
+    $request->validate([
+        'heading'       => 'required|string|max:255',
+        'first_button'  => 'nullable|string|max:255',
+        'second_button' => 'nullable|string|max:255',
+    ]);
+    $banner = Banner::findOrFail($id);
+    $videofile = $banner->video_url; // Keep old value by default
+
+    if ($request->hasFile('video_url')) {
+
         $request->validate([
-            'video_url'     => 'required|url',
-            'heading'       => 'required|string|max:255',
-            'first_button'  => 'nullable|string|max:255',
-            'second_button' => 'nullable|string|max:255',
+            'video_url' => 'file|mimes:mp4,mov,avi,webm|max:20480',
         ]);
 
-        $banner->update($request->only([
-            'video_url',
-            'heading',
-            'first_button',
-            'second_button',
-        ]));
+        // Delete old file if it exists
+        if (
+            $banner->video_url &&
+            file_exists(public_path($banner->video_url)) &&
+            !filter_var($banner->video_url, FILTER_VALIDATE_URL)
+        ) {
+            unlink(public_path($banner->video_url));
+        }
 
-        return
-            back()
-            ->with('success', 'Banner updated successfully.');
+        $file = $request->file('video_url');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads/banner'), $filename);
+
+        $videofile = 'uploads/banner/' . $filename;
+
+    } elseif ($request->filled('video_url')) {
+
+        $request->validate([
+            'video_url' => 'url',
+        ]);
+
+        $videofile = $request->video_url;
     }
 
+      $banner->update([
+        'video_url'      => $videofile,
+        'heading'        => $request->heading,
+        'first_button'   => $request->first_button,
+        'second_button'  => $request->second_button,
+    ]);
+
+    return back()->with('success', 'Banner updated successfully.');
+}
 
     public function destroy($id)
     {
@@ -80,7 +127,7 @@ class BannerController extends Controller
         $banner->delete();
 
         return redirect()
-            ->route('banner.index')
+            ->route('banner')
             ->with('success', 'Banner deleted successfully.');
     }
 }

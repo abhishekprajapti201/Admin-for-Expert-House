@@ -1,6 +1,18 @@
 @extends('admin.loyout.master')
 @section('content')
+ @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        </script>
+    @endif
 
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
 <div class="max-w-3xl mx-auto">
 
   <!-- page header -->
@@ -15,10 +27,26 @@
   <!-- form card with all fields: video_url, heading, first_button, second_button -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
 
-    <form id="bannerForm" onsubmit="return handleSubmit(event)" class="space-y-6">
-
+    <form action="{{ route('banner.update',$banner->id) }}" method="POST" onsubmit="return handleSubmit(event)" class="space-y-6">
+@csrf
       <!-- video_url field -->
-      <div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+ <div>
+        <label for="video_url" class="block text-sm font-medium text-gray-700 mb-1">
+          <i class="fas fa-link text-gray-400 mr-1"></i> Video URL
+        </label>
+        <div>
+
+          <input type="file" id="video_url" name="video_url" value="{{ old('video_url',$banner->video_url ?? "") }}"
+                 class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
+                >
+                <p>
+                    <img src="{{ asset($banner->video_url ?? "") }}" alt="" width="100">
+                </p>
+        </div>
+      </div>
+
+       <div>
         <label for="video_url" class="block text-sm font-medium text-gray-700 mb-1">
           <i class="fas fa-link text-gray-400 mr-1"></i> Video URL
         </label>
@@ -26,23 +54,25 @@
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <i class="fas fa-play-circle text-gray-400"></i>
           </div>
-          <input type="url" id="video_url" name="video_url"
+          <input type="url" id="video_url" name="video_url" value="{{ old('video_url',$banner->video_url) }}"
                  class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
                  placeholder="https://www.youtube.com/embed/..."
                  value="https://www.youtube.com/embed/dQw4w9WgXcQ">
         </div>
         <p class="mt-1 text-xs text-gray-400">Supports YouTube, Vimeo or direct video link.</p>
       </div>
+      </div>
+
 
       <!-- heading field -->
       <div>
         <label for="heading" class="block text-sm font-medium text-gray-700 mb-1">
           <i class="fas fa-heading text-gray-400 mr-1"></i> Heading
         </label>
-        <input type="text" id="heading" name="heading"
+        <input type="text" id="heading" name="heading" value="{{ old('heading',$banner->heading ?? "") }}"
                class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
                placeholder="e.g. Summer collection 2026"
-               value="Empower your brand">
+              >
       </div>
 
       <!-- first_button & second_button (side by side on md+) -->
@@ -51,19 +81,19 @@
           <label for="first_button" class="block text-sm font-medium text-gray-700 mb-1">
             <i class="fas fa-circle text-gray-400 mr-1"></i> First button
           </label>
-          <input type="text" id="first_button" name="first_button"
+          <input type="text" id="first_button" name="first_button" value="{{ old('first_button',$banner->first_button ?? "") }}"
                  class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
                  placeholder="Label / link"
-                 value="Shop now →">
+                 >
         </div>
         <div>
           <label for="second_button" class="block text-sm font-medium text-gray-700 mb-1">
             <i class="fas fa-circle text-gray-400 mr-1"></i> Second button
           </label>
-          <input type="text" id="second_button" name="second_button"
+          <input type="text" id="second_button" name="second_button" value="{{ old('second_button',$banner->second_button ?? "") }}"
                  class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
                  placeholder="Label / link"
-                 value="Learn more">
+                 >
         </div>
       </div>
 
@@ -75,7 +105,7 @@
 
 
           <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition flex items-center">
-            <i class="fas fa-save mr-1.5"></i> Save banner
+            <i class="fas fa-save mr-1.5"></i> Update banner
           </button>
         </div>
       </div>

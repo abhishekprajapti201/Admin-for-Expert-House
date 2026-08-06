@@ -1,6 +1,18 @@
 @extends('admin.loyout.master')
 @section('content')
+ @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        </script>
+    @endif
 
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
 <div class="max-w-3xl mx-auto">
 
   <!-- page header -->
@@ -9,16 +21,31 @@
       <h1 class="text-2xl font-bold text-gray-800">Add new banner</h1>
       <p class="text-sm text-gray-500 mt-1">Fill in the fields below to create a new banner slide.</p>
     </div>
-    
+
   </div>
 
   <!-- form card with all fields: video_url, heading, first_button, second_button -->
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
 
-    <form id="bannerForm" onsubmit="return handleSubmit(event)" class="space-y-6">
-
+    <form action="{{ route('banner.store') }}" method="POST" onsubmit="return handleSubmit(event)" class="space-y-6">
+@csrf
       <!-- video_url field -->
-      <div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+ <div>
+        <label for="video_url" class="block text-sm font-medium text-gray-700 mb-1">
+          <i class="fas fa-link text-gray-400 mr-1"></i> Video File
+        </label>
+        <div>
+
+          <input type="file" id="video_url" name="video_url" value="{{ old('') }}"
+                 class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
+                >
+        </div>
+                <p class="mt-1 text-xs text-gray-400">Supports Only video File</p>
+
+      </div>
+
+       <div>
         <label for="video_url" class="block text-sm font-medium text-gray-700 mb-1">
           <i class="fas fa-link text-gray-400 mr-1"></i> Video URL
         </label>
@@ -26,13 +53,15 @@
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <i class="fas fa-play-circle text-gray-400"></i>
           </div>
-          <input type="url" id="video_url" name="video_url"
+          <input type="url" id="video_url" name="video_url" value="{{ old('') }}"
                  class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
                  placeholder="https://www.youtube.com/embed/..."
                  value="https://www.youtube.com/embed/dQw4w9WgXcQ">
         </div>
         <p class="mt-1 text-xs text-gray-400">Supports YouTube, Vimeo or direct video link.</p>
       </div>
+      </div>
+
 
       <!-- heading field -->
       <div>
