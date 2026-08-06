@@ -2,6 +2,19 @@
 @extends('admin.loyout.master')
 
 @section('content')
+  @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
 <div class="w-full max-w-7xl mx-auto bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden transition-all duration-200">
     {{-- Header --}}
     <div class="px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100/80 flex flex-wrap items-center justify-between gap-4">
@@ -57,8 +70,8 @@
                 <tr class="hover:bg-rose-50/40 transition-colors duration-150">
                     <td class="px-4 py-4 font-medium text-gray-500">{{ $loop->iteration }}</td>
                     <td class="px-4 py-4">
-                        @if($post->image && file_exists(public_path('uploads/posts/' . $post->image)))
-                            <img src="{{ asset('uploads/posts/' . $post->image) }}"
+                        @if($post->image)
+                            <img src="{{ asset($post->image) }}"
                                  alt="{{ $post->heading }}"
                                  class="w-12 h-12 rounded-xl object-cover border border-gray-200 shadow-sm">
                         @else
@@ -87,13 +100,13 @@
                     </td>
                     <td class="px-4 py-4">
                         @if($post->date)
-                            <span class="text-xs text-gray-500">{{ $post->date->format('M d, Y') }}</span>
+                            <span class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($post->date)->format('M d, Y')  }}</span>
                         @else
                             <span class="text-gray-400 text-xs">N/A</span>
                         @endif
                     </td>
                     <td class="px-4 py-4 text-right">
-                        <a href="{{ route('admin.posts.show', $post) }}"
+                        <a href=""
                            class="text-gray-400 hover:text-rose-600 transition-colors mr-2 inline-block">
                             <i class="fas fa-eye text-sm"></i>
                         </a>
@@ -101,7 +114,7 @@
                            class="text-gray-400 hover:text-rose-600 transition-colors mr-2 inline-block">
                             <i class="fas fa-pen text-sm"></i>
                         </a>
-                        <form action="{{ route('insight.destroy', $post) }}" method="POST" class="inline-block">
+                        <form action="{{ route('insight.delete', $post) }}" method="POST" class="inline-block">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-gray-400 hover:text-red-500 transition-colors"

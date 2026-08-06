@@ -11,6 +11,6 @@ class Category extends Model
     protected $primaryKey = 'id';
 
     public function insight(){
-        return $this->hasMany(InsightPages::class,'cat_id');
+        return $this->hasMany(InsightPages::class."cat_id");
     }
 }

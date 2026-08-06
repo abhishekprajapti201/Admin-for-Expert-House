@@ -2,6 +2,19 @@
 @extends('admin.loyout.master')
 
 @section('content')
+  @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
     <style>
         /* Modern CKEditor Styling */
         .ck-editor__editable {
@@ -82,7 +95,7 @@
             <p class="text-sm text-gray-500 mt-1 ml-1">Fill in the details to create a new post</p>
         </div>
 
-        <form action="" method="POST" enctype="multipart/form-data" class="px-8 py-6" id="postForm">
+        <form action="{{ route('insight.store') }}" method="POST" enctype="multipart/form-data" class="px-8 py-6" id="postForm">
             @csrf
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

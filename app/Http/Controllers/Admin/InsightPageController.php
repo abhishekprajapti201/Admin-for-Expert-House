@@ -56,7 +56,7 @@ class InsightPageController extends Controller
 
 
             $image->move($destinationPath, $imageName);
-            $data['image'] = $imageName;
+            $data['image'] = 'uploads/posts/'.$imageName;
         }
 
         InsightPages::create($data);
@@ -66,11 +66,13 @@ class InsightPageController extends Controller
     }
 
 
-      public function edit($id)
-    {
-        $posts = InsightPages::with(['category'])->all();
-        return view('admin.insights.edit', compact('posts'));
-    }
+    public function edit($id)
+{
+    $post = InsightPages::with('category')->findOrFail($id);
+    $categories = Category::all();
+
+    return view('admin.insights.edit', compact('post', 'categories'));
+}
 
     public function update(Request $request, $id)
 
@@ -111,7 +113,7 @@ class InsightPageController extends Controller
             }
 
             $image->move($destinationPath, $imageName);
-            $data['image'] = $imageName;
+            $data['image'] = 'uploads/posts/'.$imageName;
         }
 
         $post->update($data);
