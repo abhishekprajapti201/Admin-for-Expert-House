@@ -28,20 +28,7 @@
                 </h2>
                 <p class="text-sm text-gray-500 mt-1 ml-1">Manage your contact & branding information</p>
             </div>
-            <div class="flex items-center gap-3">
-                <button
-                    class="text-sm bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 font-medium">
-                    <i class="fas fa-plus-circle"></i> Add New
-                </button>
-                <button
-                    class="text-sm bg-white hover:bg-gray-50 text-gray-700 px-5 py-2.5 rounded-xl shadow-sm border border-gray-300 hover:border-gray-400 transition-all duration-200 flex items-center gap-2 font-medium">
-                    <i class="fas fa-edit text-blue-500"></i> Edit
-                </button>
-                <button
-                    class="text-sm bg-white hover:bg-red-50 text-red-600 px-5 py-2.5 rounded-xl shadow-sm border border-gray-300 hover:border-red-200 transition-all duration-200 flex items-center gap-2 font-medium">
-                    <i class="fas fa-trash-alt"></i> Delete
-                </button>
-            </div>
+          
         </div>
 
         {{-- Table --}}

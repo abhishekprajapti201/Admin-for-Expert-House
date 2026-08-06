@@ -2,6 +2,13 @@
 @extends('admin.loyout.master')
 
 @section('content')
+
+
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
 <div class="w-full max-w-6xl mx-auto bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden transition-all duration-200">
     {{-- Header --}}
     <div class="px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100/80 flex flex-wrap items-center justify-between gap-4">
@@ -71,15 +78,15 @@
                         {{ $category->created_at->format('M d, Y H:i') }}
                     </td>
                     <td class="px-4 py-4 text-right">
-                        <a href="{{ route('admin.categories.show', $category) }}"
+                        <a href=""
                            class="text-gray-400 hover:text-indigo-600 transition-colors mr-2 inline-block">
                             <i class="fas fa-eye text-sm"></i>
                         </a>
-                        <a href="{{ route('admin.categories.edit', $category) }}"
+                        <a href="{{ route('category.edit',$catrgory->id ?? 0) }}"
                            class="text-gray-400 hover:text-indigo-600 transition-colors mr-2 inline-block">
                             <i class="fas fa-pen text-sm"></i>
                         </a>
-                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline-block">
+                        <form action="{{ route('category.delete',$category->id ?? 0) }}" method="POST" class="inline-block">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-gray-400 hover:text-red-500 transition-colors"

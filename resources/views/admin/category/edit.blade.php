@@ -1,7 +1,20 @@
 {{-- resources/views/admin/categories/edit.blade.php --}}
-@extends('admin.layout.master')
+@extends('admin.loyout.master')
 
 @section('content')
+    @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
 <div class="w-full max-w-3xl mx-auto bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden">
     <div class="px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100/80">
         <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
@@ -53,7 +66,7 @@
 
         <!-- Form Actions -->
         <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-200/80 mt-6">
-            <a href="{{ route('admin.categories.index') }}"
+            <a href="""
                class="px-6 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-xl transition-all">
                 Cancel
             </a>

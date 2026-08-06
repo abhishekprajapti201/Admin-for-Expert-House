@@ -2,6 +2,19 @@
 @extends('admin.loyout.master')
 
 @section('content')
+    @if ($errors->any())
+        <script>
+            @foreach ($errors->all() as $error)
+                toastr.error("{{ $error }}");
+            @endforeach
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            toastr.success("{{ session('success') }}")
+        </script>
+    @endif
 <div class="w-full max-w-3xl mx-auto bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden">
     <div class="px-8 py-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100/80">
         <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
@@ -13,7 +26,7 @@
         <p class="text-sm text-gray-500 mt-1 ml-1">Add a new category to your system</p>
     </div>
 
-    <form action="" method="POST" class="px-8 py-6">
+    <form action="{{ route('category.store') }}" method="POST" class="px-8 py-6">
         @csrf
 
         <div class="space-y-5">
