@@ -12,13 +12,13 @@ class BannerController extends Controller
     public function index()
     {
         $banners = Banner::latest()->paginate(10);
-        return view('admin.banner.index', compact('banners'));
+        return view('admin.banners.index', compact('banners'));
     }
 
 
     public function create()
     {
-        return view('admin.banner.create');
+        return view('admin.banners.create');
     }
 
     public function store(Request $request)

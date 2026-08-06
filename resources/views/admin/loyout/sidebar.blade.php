@@ -75,7 +75,7 @@
 
             </div>
 
-            <a href=""
+            <a href="{{ route('banner') }}"
                 class="sidebar-item flex items-center gap-4 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition">
                 <i class="fa-solid fa-briefcase-medical w-5"></i>
                 <span class="font-medium">Manage Banner</span>
