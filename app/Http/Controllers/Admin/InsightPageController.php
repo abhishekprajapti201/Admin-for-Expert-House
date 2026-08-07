@@ -29,7 +29,7 @@ class InsightPageController extends Controller
         $validator = Validator::make($request->all(), [
             'heading' => 'required|string|max:255',
             'paragraph' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'image' => 'nullable|file',
             'description' => 'nullable|string',
             'created_by' => 'nullable|string|max:100',
             'note' => 'nullable|string',
